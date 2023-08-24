@@ -10,7 +10,7 @@ import {
 	useToast,
 } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
-import { useForm } from '../../hooks/Hooks';
+import { useForm } from '../../hooks/useForm';
 import { addCustomerFormData } from '../../redux/customerSlice/CustomerSlice';
 
 const CustomerForm = () => {

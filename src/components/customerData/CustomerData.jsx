@@ -1,12 +1,7 @@
 import { Button, Stack, Td, Tr } from '@chakra-ui/react';
 
-const CustomerData = ({
-	firstName,
-	lastName,
-	customerID,
-	address,
-	onDelete,
-}) => {
+const CustomerData = ({ customer, onEdit, onDelete }) => {
+	const { firstName, lastName, customerID, address } = customer;
 	return (
 		<Tr>
 			<Td>{firstName}</Td>
@@ -21,6 +16,7 @@ const CustomerData = ({
 						_hover={{
 							bg: 'primary.600',
 						}}
+						onClick={onEdit}
 					>
 						Edit
 					</Button>

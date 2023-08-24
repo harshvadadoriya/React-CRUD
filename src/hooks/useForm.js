@@ -11,11 +11,15 @@ export const useForm = (initialState, onSubmit, displayToast) => {
 		}));
 	};
 
-	const handleFormSubmit = (e) => {
+	const handleFormSubmit = async (e) => {
 		e.preventDefault();
-		onSubmit(formData);
-		setFormData(initialState);
-		displayToast();
+		try {
+			await onSubmit(formData);
+			displayToast();
+			setFormData(initialState);
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	return {

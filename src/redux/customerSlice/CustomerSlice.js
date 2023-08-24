@@ -9,6 +9,15 @@ const customerSlice = createSlice({
 		addCustomerFormData: (state, action) => {
 			state.push(action.payload);
 		},
+		editCustomerData: (state, action) => {
+			const editedCustomer = action.payload;
+			const index = state.findIndex(
+				(customer) => customer.customerID === editedCustomer.customerID
+			);
+			if (index !== -1) {
+				state[index] = editedCustomer;
+			}
+		},
 		deleteCustomerData: (state, action) => {
 			const customerID = action.payload;
 			return state.filter((customer) => customer.customerID !== customerID);
@@ -19,6 +28,7 @@ const customerSlice = createSlice({
 
 export const {
 	addCustomerFormData,
+	editCustomerData,
 	deleteCustomerData,
 	resetCustomerFormData,
 } = customerSlice.actions;

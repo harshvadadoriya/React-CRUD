@@ -9,16 +9,22 @@ import {
 	TableContainer,
 	Center,
 	Divider,
+	Text,
+	useToast,
 } from '@chakra-ui/react';
 import SearchHeaders from '../searchHeader';
 import CustomerData from '../customerData';
 import { useDispatch, useSelector } from 'react-redux';
 import {
 	deleteCustomerData,
+	editCustomerData,
 	getCustomerData,
 } from '../../redux/customerSlice/CustomerSlice';
+import CustomerEditModal from '../modal/CustomerEditModal';
 
 const CustomerTable = () => {
+	const dispatch = useDispatch();
+	const toast = useToast();
 	const [sortConfig, setSortConfig] = useState({
 		key: null,
 		direction: 'ascending',
@@ -63,9 +69,29 @@ const CustomerTable = () => {
 		return 0;
 	});
 
-	const dispatch = useDispatch();
+	const displayToast = () => {
+		toast({
+			title: 'Customer Record Deleted',
+			status: 'warning',
+			duration: 2000,
+			isClosable: true,
+			position: 'top',
+		});
+	};
 	const handleDelete = (customerID) => {
 		dispatch(deleteCustomerData(customerID));
+		displayToast();
+	};
+
+	const [editingCustomer, setEditingCustomer] = useState(null);
+
+	const handleEdit = (customer) => {
+		setEditingCustomer(customer);
+	};
+
+	const handleEditSubmit = (editedCustomer) => {
+		dispatch(editCustomerData(editedCustomer));
+		setEditingCustomer(null);
 	};
 
 	useEffect(() => {
@@ -90,45 +116,49 @@ const CustomerTable = () => {
 						/>
 						<Tr color="primary.600" mt="10" bgColor="gray.300">
 							<Th onClick={() => sortData('firstName')} cursor="pointer">
-								<Heading fontSize="md" color="primary.600">
+								<Text fontSize="md" color="primary.600">
 									First Name
-								</Heading>
+								</Text>
 							</Th>
 							<Th onClick={() => sortData('lastName')} cursor="pointer">
-								<Heading fontSize="md" color="primary.600">
+								<Text fontSize="md" color="primary.600">
 									Last Name
-								</Heading>
+								</Text>
 							</Th>
 							<Th onClick={() => sortData('customerID')} cursor="pointer">
-								<Heading fontSize="md" color="primary.600">
+								<Text fontSize="md" color="primary.600">
 									Customer ID
-								</Heading>
+								</Text>
 							</Th>
 							<Th onClick={() => sortData('address')} cursor="pointer">
-								<Heading fontSize="md" color="primary.600">
+								<Text fontSize="md" color="primary.600">
 									Address
-								</Heading>
+								</Text>
 							</Th>
 							<Th>
-								<Heading fontSize="md" color="primary.600">
+								<Text fontSize="md" color="primary.600">
 									Action
-								</Heading>
+								</Text>
 							</Th>
 						</Tr>
 					</Thead>
 					<Tbody>
-						{sortedData.map(({ firstName, lastName, customerID, address }) => (
+						{sortedData.map((customer) => (
 							<CustomerData
-								key={customerID}
-								firstName={firstName}
-								lastName={lastName}
-								customerID={customerID}
-								address={address}
-								onDelete={() => handleDelete(customerID)}
+								key={customer?.customerID}
+								customer={customer}
+								onEdit={() => handleEdit(customer)}
+								onDelete={() => handleDelete(customer?.customerID)}
 							/>
 						))}
 					</Tbody>
 				</Table>
+				<CustomerEditModal
+					customer={editingCustomer}
+					isOpen={editingCustomer !== null}
+					onClose={() => setEditingCustomer(null)}
+					onSubmit={handleEditSubmit}
+				/>
 			</TableContainer>
 		</>
 	);
