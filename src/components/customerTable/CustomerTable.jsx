@@ -4,23 +4,25 @@ import {
 	Thead,
 	Tbody,
 	Tr,
-	Th,
 	Heading,
 	TableContainer,
 	Center,
 	Divider,
-	Text,
 	useToast,
+	Th,
+	Text,
 } from '@chakra-ui/react';
-import SearchHeaders from '../searchHeader';
-import CustomerData from '../customerData';
 import { useDispatch, useSelector } from 'react-redux';
+import SearchHeaders from '../searchHeader';
 import {
 	deleteCustomerData,
 	editCustomerData,
 	getCustomerData,
 } from '../../redux/customerSlice/CustomerSlice';
-import CustomerEditModal from '../modal/CustomerEditModal';
+import CustomerData from '../customerData';
+import CustomerEditModal from '../customerEditModal';
+import { headerLabels } from '../../constant/constant';
+import TableHeader from './tableHeader';
 
 const CustomerTable = () => {
 	const dispatch = useDispatch();
@@ -107,34 +109,15 @@ const CustomerTable = () => {
 				<Divider my={2} />
 				<Table width={'95%'} margin="auto" variant="striped" p="5">
 					<Thead userSelect="none">
-						<SearchHeaders
-							firstName={searchTerm.firstName}
-							lastName={searchTerm.lastName}
-							customerID={searchTerm.customerID}
-							address={searchTerm.address}
-							onSearch={handleSearch}
-						/>
+						<SearchHeaders {...searchTerm} onSearch={handleSearch} />
 						<Tr color="primary.600" mt="10" bgColor="gray.300">
-							<Th onClick={() => sortData('firstName')} cursor="pointer">
-								<Text fontSize="md" color="primary.600">
-									First Name
-								</Text>
-							</Th>
-							<Th onClick={() => sortData('lastName')} cursor="pointer">
-								<Text fontSize="md" color="primary.600">
-									Last Name
-								</Text>
-							</Th>
-							<Th onClick={() => sortData('customerID')} cursor="pointer">
-								<Text fontSize="md" color="primary.600">
-									Customer ID
-								</Text>
-							</Th>
-							<Th onClick={() => sortData('address')} cursor="pointer">
-								<Text fontSize="md" color="primary.600">
-									Address
-								</Text>
-							</Th>
+							{headerLabels.map((header) => (
+								<TableHeader
+									key={header.key}
+									label={header.label}
+									onClick={() => sortData(header.key)}
+								/>
+							))}
 							<Th>
 								<Text fontSize="md" color="primary.600">
 									Action

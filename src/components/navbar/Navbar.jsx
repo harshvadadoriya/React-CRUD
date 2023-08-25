@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link, Box, Flex, Text, Button, Stack } from '@chakra-ui/react';
-import Logo from '../logo/Logo';
+import { Box, Flex, Text, Button, Stack } from '@chakra-ui/react';
+import Logo from '../logo';
 import { NavLink, Outlet } from 'react-router-dom';
 import { CloseIcon, MenuIcon } from './navIcons/Icons';
 

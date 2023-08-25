@@ -2,16 +2,15 @@ import {
 	Box,
 	Button,
 	Center,
-	FormControl,
-	FormLabel,
 	Heading,
-	Input,
 	VStack,
 	useToast,
 } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
-import { useForm } from '../../hooks/useForm';
+import { useForm } from '../../hook/useForm';
 import { addCustomerFormData } from '../../redux/customerSlice/CustomerSlice';
+import { customerFormFields } from '../../constant/constant';
+import FormInput from './formInput';
 
 const CustomerForm = () => {
 	const initialState = {
@@ -48,50 +47,18 @@ const CustomerForm = () => {
 				<Box mt={5}>
 					<form onSubmit={handleFormSubmit}>
 						<VStack spacing="2" alignItems="flex-start">
-							<FormControl>
-								<FormLabel color="primary.600">First Name</FormLabel>
-								<Input
-									type="text"
-									name="firstName"
-									placeholder="Enter First Name"
-									value={formData.firstName}
+							{customerFormFields.map((field) => (
+								<FormInput
+									key={field.name}
+									type={field.type}
+									label={field.label}
+									name={field.name}
+									placeholder={field.placeholder}
+									value={formData[field.name]}
 									onChange={handleFormChange}
-									required
+									required={field.required}
 								/>
-							</FormControl>
-							<FormControl>
-								<FormLabel color="primary.600">Last Name</FormLabel>
-								<Input
-									type="text"
-									name="lastName"
-									placeholder="Enter Last Name"
-									value={formData.lastName}
-									onChange={handleFormChange}
-									required
-								/>
-							</FormControl>
-							<FormControl>
-								<FormLabel color="primary.600">Customer ID</FormLabel>
-								<Input
-									type="text"
-									name="customerID"
-									placeholder="Enter CustomerID"
-									value={formData.customerID}
-									onChange={handleFormChange}
-									required
-								/>
-							</FormControl>
-							<FormControl>
-								<FormLabel color="primary.600">Address</FormLabel>
-								<Input
-									type="text"
-									name="address"
-									placeholder="Enter Address"
-									value={formData.address}
-									onChange={handleFormChange}
-									required
-								/>
-							</FormControl>
+							))}
 							<Button
 								size="md"
 								rounded="md"

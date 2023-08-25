@@ -12,20 +12,21 @@ import {
 	ModalOverlay,
 	useToast,
 } from '@chakra-ui/react';
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const CustomerEditModal = ({ customer, isOpen, onClose, onSubmit }) => {
 	const toast = useToast();
 	const [editedCustomer, setEditedCustomer] = useState(customer);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		setEditedCustomer(customer);
 	}, [customer]);
 
-	const handleFieldChange = (field, value) => {
+	const handleFieldChange = (e) => {
+		const { name, value } = e.target;
 		setEditedCustomer((prevCustomer) => ({
 			...prevCustomer,
-			[field]: value,
+			[name]: value,
 		}));
 	};
 
@@ -49,7 +50,7 @@ const CustomerEditModal = ({ customer, isOpen, onClose, onSubmit }) => {
 		<Modal isOpen={isOpen} onClose={onClose}>
 			<ModalOverlay />
 			<ModalContent>
-				<ModalHeader color="primary.500">Edit Customer</ModalHeader>
+				<ModalHeader color="primary.500">Edit Customer Details</ModalHeader>
 				<ModalCloseButton />
 				<ModalBody>
 					<FormControl>
@@ -58,7 +59,7 @@ const CustomerEditModal = ({ customer, isOpen, onClose, onSubmit }) => {
 							isDisabled
 							name="customerID"
 							value={editedCustomer?.customerID}
-							onChange={(e) => handleFieldChange('customerID', e.target.value)}
+							onChange={handleFieldChange}
 						/>
 					</FormControl>
 					<FormControl>
@@ -66,7 +67,7 @@ const CustomerEditModal = ({ customer, isOpen, onClose, onSubmit }) => {
 						<Input
 							name="firstName"
 							value={editedCustomer?.firstName}
-							onChange={(e) => handleFieldChange('firstName', e.target.value)}
+							onChange={handleFieldChange}
 						/>
 					</FormControl>
 					<FormControl>
@@ -74,7 +75,7 @@ const CustomerEditModal = ({ customer, isOpen, onClose, onSubmit }) => {
 						<Input
 							name="lastName"
 							value={editedCustomer?.lastName}
-							onChange={(e) => handleFieldChange('lastName', e.target.value)}
+							onChange={handleFieldChange}
 						/>
 					</FormControl>
 					<FormControl>
@@ -82,7 +83,7 @@ const CustomerEditModal = ({ customer, isOpen, onClose, onSubmit }) => {
 						<Input
 							name="address"
 							value={editedCustomer?.address}
-							onChange={(e) => handleFieldChange('address', e.target.value)}
+							onChange={handleFieldChange}
 						/>
 					</FormControl>
 				</ModalBody>

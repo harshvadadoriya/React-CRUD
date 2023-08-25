@@ -1,13 +1,11 @@
 import { Box, Text } from '@chakra-ui/react';
-import CustomerForm from './components/customerForm';
-import Navbar from './components/navbar';
 import {
 	Route,
 	createBrowserRouter,
 	createRoutesFromElements,
 	RouterProvider,
 } from 'react-router-dom';
-import CustomerTable from './components/customerTable';
+import { CustomerForm, CustomerTable, Navbar } from './components';
 
 const App = () => {
 	const router = createBrowserRouter(
