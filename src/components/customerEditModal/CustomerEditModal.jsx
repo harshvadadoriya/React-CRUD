@@ -12,13 +12,14 @@ import {
 	ModalOverlay,
 	useToast,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
+import { editCustomerFormFields } from '../../constant/constant';
 
 const CustomerEditModal = ({ customer, isOpen, onClose, onSubmit }) => {
 	const toast = useToast();
 	const [editedCustomer, setEditedCustomer] = useState(customer);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		setEditedCustomer(customer);
 	}, [customer]);
 
@@ -30,7 +31,9 @@ const CustomerEditModal = ({ customer, isOpen, onClose, onSubmit }) => {
 		}));
 	};
 
-	const displayToast = () => {
+	const handleSubmit = () => {
+		onSubmit(editedCustomer);
+		onClose();
 		toast({
 			title: 'Customer Record Updated',
 			status: 'success',
@@ -40,52 +43,31 @@ const CustomerEditModal = ({ customer, isOpen, onClose, onSubmit }) => {
 		});
 	};
 
-	const handleSubmit = () => {
-		onSubmit(editedCustomer);
-		onClose();
-		displayToast();
-	};
-
 	return (
 		<Modal isOpen={isOpen} onClose={onClose}>
 			<ModalOverlay />
 			<ModalContent>
-				<ModalHeader color="primary.500">Edit Customer Details</ModalHeader>
+				<ModalHeader
+					color="primary.500"
+					bgColor="gray.200"
+					borderTopRadius="md"
+				>
+					Edit Customer Details
+				</ModalHeader>
 				<ModalCloseButton />
 				<ModalBody>
-					<FormControl>
-						<FormLabel color="primary.500">Customer ID</FormLabel>
-						<Input
-							isDisabled
-							name="customerID"
-							value={editedCustomer?.customerID}
-							onChange={handleFieldChange}
-						/>
-					</FormControl>
-					<FormControl>
-						<FormLabel color="primary.500">First Name</FormLabel>
-						<Input
-							name="firstName"
-							value={editedCustomer?.firstName}
-							onChange={handleFieldChange}
-						/>
-					</FormControl>
-					<FormControl>
-						<FormLabel color="primary.500">Last Name</FormLabel>
-						<Input
-							name="lastName"
-							value={editedCustomer?.lastName}
-							onChange={handleFieldChange}
-						/>
-					</FormControl>
-					<FormControl>
-						<FormLabel color="primary.500">Address</FormLabel>
-						<Input
-							name="address"
-							value={editedCustomer?.address}
-							onChange={handleFieldChange}
-						/>
-					</FormControl>
+					{editCustomerFormFields.map((field) => (
+						<FormControl key={field.key}>
+							<FormLabel color="primary.500">{field.label}</FormLabel>
+							<Input
+								isDisabled
+								name={field.name}
+								value={editedCustomer ? editedCustomer[field.key] : ''}
+								onChange={handleFieldChange}
+								disabled={field.isDisabled}
+							/>
+						</FormControl>
+					))}
 				</ModalBody>
 				<ModalFooter>
 					<Button colorScheme="primary" onClick={handleSubmit}>

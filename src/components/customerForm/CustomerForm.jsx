@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux';
 import { useForm } from '../../hook/useForm';
 import { addCustomerFormData } from '../../redux/customerSlice/CustomerSlice';
 import { customerFormFields } from '../../constant/constant';
-import FormInput from './formInput';
+import CustomInput from '../customInput';
 
 const CustomerForm = () => {
 	const initialState = {
@@ -48,7 +48,8 @@ const CustomerForm = () => {
 					<form onSubmit={handleFormSubmit}>
 						<VStack spacing="2" alignItems="flex-start">
 							{customerFormFields.map((field) => (
-								<FormInput
+								<CustomInput
+									searchInput={false}
 									key={field.name}
 									type={field.type}
 									label={field.label}
